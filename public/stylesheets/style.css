@@ -3,6 +3,19 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+h1,h2,h3,h4,h5 {
+  font-family: 'Monoton', cursive;
+}
+
 a {
   color: #00B7FF;
+}
+
+.header {
+  background-color: #8dd8c0;
+}
+
+.logo {
+  width: 50%;
+  height: 50%;
 }
