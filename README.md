@@ -15,11 +15,13 @@ Create a simple content management system that allows users to add, delete, or u
 
 # Specifications
 
- - [ ] Any user can add books into the system via an admin page
- - [ ] Books entered in the system are listed on the home page, in pages of 10
+ - [ ] Only admin user can add/edit/delete books in the system.
+ - [ ] Books are listed on the home page, in groups of 10
  - [ ] Users can search for books by title OR by author OR by genre, and search results will be presented in a new page
  - [ ] Users can view book details on a book detail page, linked to from the listing or search pages
  - [ ] All code submissions are peer reviewed via GitHub PR by at least two members of the team, and master is always in a stable state (tests passed, site functions)
+
+- [ ] Code is written in ES6 and transpiled using webpack
 
 # Required
 
