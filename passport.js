@@ -1,17 +1,21 @@
 const passport = require('passport')
-const LocalStrategy = require('passport-local').Strategy;
+const LocalStrategy = require('passport-local').Strategy
+const User = require('./queryLogic').User
 
-const findUser = ( username, password ) => {
-  return {} // Pay no attention to the man behind the curtain
+const findUser = ( email, password ) => {
+  return User.find( email, password )
 }
 
-const strategy = new LocalStrategy( (username, password, done ) => {
-
-  // Find the user referenced by username/password
-    // if error returned, done(err)
-    // if user not found, done( null, false, { message: 'Incorrect username or password.'})
-    // if not valid password , done( null, false, { message: 'Incorrect password or password.'})
-    // we found one: done( null, user )
+const strategy = new LocalStrategy( (email, password, done ) => {
+  findUser( email, password )
+    .then( user => {
+      if( user === null ) {
+        done( null, false, { message: 'Incorrect email or password.' })
+      } else {
+        done( null, user )
+      }
+    })
+    .catch( error => done( err ) )
 })
 
 passport.use( strategy )

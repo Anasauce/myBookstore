@@ -1,16 +1,12 @@
 var express = require('express');
 var router = express.Router();
-var queryLogic = require('../queryLogic')
+// var queryLogic = require('../queryLogic')
 
-/* GET home page. */
-
-router.get('/', (req, res) => {
-  queryLogic.getEverything()
-  .then(data => {
-    res.json(data)
-  })
-  // res.render('index')
-  .catch( error => response.send({ error, message: error.message }))
+router.get('/', (request, response) => {
+  response.send( { data: 'hi' })
+  // queryLogic.getEverything()
+  // .then( data => res.json(data) )
+  // .catch( error => response.send({ error, message: error.message }))
 })
 
 // router.get('/test', (req, res) => {

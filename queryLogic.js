@@ -3,7 +3,7 @@ const connectionString = `postgres://${process.env.USER}@localhost:5432/${databa
 const pgp = require('pg-promise')()
 const db = pgp(connectionString)
 
-//get single book 
+//get single book
 const getBookById = bookId => db.one("SELECT * FROM books WHERE books.id=$1", [bookId])
 
 //get all books
@@ -17,8 +17,8 @@ const getGenreByBookId = bookId => {
     LEFT JOIN book_genres
     ON genres.id = book_genres.genre_id
     WHERE book_genres.book_id=$1
-  ` 
-  return db.any(sql, [bookId]) 
+  `
+  return db.any(sql, [bookId])
 }
 
 //get author by book_id
@@ -41,8 +41,8 @@ const getSingleBook = bookId => {
   ]).then(data => {
     console.log(data[0] instanceof Array)
     return Object.assign(
-      data[0], 
-      { authors: data[2] }, 
+      data[0],
+      { authors: data[2] },
       { genres: data[1] }
     )
   })
@@ -51,19 +51,19 @@ const getSingleBook = bookId => {
 const getEverything = book => {
   return getAllBooks().then(books => {
     const bookIds = books.map(book => book.id)
-    
+
     return Promise.all([
       getGenreByBookId(bookIds),
       getAuthorByBookId(bookIds),
     ]).then(data => {
       return Object.assign(
         { bookIds },
-        { authors: data[1] }, 
+        { authors: data[1] },
         { genres: data[2] }
       )
 
     })
-  
+
   })
 
 }
@@ -84,7 +84,16 @@ const getEverything = book => {
 // }
 
 
-module.exports = { 
+const User = {
+  find: (email, password) => {
+    return db.oneOrNone(
+      'SELECT * FROM users WHERE email=$1 AND password=$2', [email, password]
+    )
+  }
+}
+
+module.exports = {
   getSingleBook,
+  User
   //getEverything
 }
