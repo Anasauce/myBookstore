@@ -90,7 +90,13 @@ const User = {
       'SELECT * FROM users WHERE email=$1 AND password=$2', [email, password]
     )
   },
-  findById: id => db.one( 'SELECT * FROM users WHERE id=$1', [id] )
+  findById: id => db.one( 'SELECT * FROM users WHERE id=$1', [id] ),
+  createOne: (email, password) => {
+    return db.one(
+      'INSERT INTO users(email, password) VALUES ($1, $2) RETURNING *',
+      [email, password]
+    )
+  }
 }
 
 module.exports = {
