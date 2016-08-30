@@ -24,6 +24,18 @@ const getGenreByBookId = bookId => {
   return db.any(sql, [bookId])
 }
 
+const getAllTheThings = () => {
+  const sql = `
+    select books.*, authors.id as author_id, authors.name, genres.id as genre_id, genres.title as genre_title from books
+    join book_authors on book_authors.book_id=books.id
+    join authors on book_authors.author_id=authors.id
+    join book_genres on book_genres.book_id=books.id
+    join genres on book_genres.genre_id=genres.id
+    order by books.id`
+
+  return db.any( sql )
+}
+
 //get author by book_id
 const getAuthorByBookId = bookId => {
   const sql = `
@@ -51,24 +63,56 @@ const getSingleBook = bookId => {
   })
 }
 
-const getEverything = book => {
-  return getAllBooks().then(books => {
-    const bookIds = books.map(book => book.id)
+const authors = (current=[], id, name) => {
+  const index = current.find( item => item.id === id )
 
-    return Promise.all([
-      getGenreByBookId(bookIds),
-      getAuthorByBookId(bookIds),
-    ]).then(data => {
-      return Object.assign(
-        { bookIds },
-        { authors: data[1] },
-        { genres: data[2] }
+  if( index === undefined ) {
+    return current.concat({ id, name })
+  }
+
+  return current
+}
+
+const genres = (current=[], id, title) => {
+  const index = current.find( item => item.id === id )
+
+  if( index === undefined ) {
+    return current.concat({ id, title })
+  }
+
+  return current
+}
+
+
+
+const getEverything = book => {
+  return Promise.all([
+    getAllTheThings()
+  ]).then( results => {
+
+    console.log(results)
+    const reducer = (memo, row) => {
+      let index = memo.findIndex( element => element.id === row.id )
+
+      if( index === -1 ) {
+        memo.push( row )
+        index = memo.length - 1
+      }
+
+      const book = memo[ index ]
+
+      memo[ index ] = Object.assign( 
+        {},
+        { id: book.id, title: book.title, description: book.description, img_url: book.img_url },
+        { authors: authors( book.authors, row.author_id, row.name ) },
+        { genres: genres( book.genres, row.genre_id, row.genre_title )}
       )
 
-    })
+      return memo
+    }
 
+    return results[ 0 ].reduce( reducer, [] )
   })
-
 }
 
 // const getEverythingByBookId = bookId => {
@@ -142,6 +186,6 @@ const User = {
 
 module.exports = {
   getSingleBook,
-  User
-  //getEverything
+  User,
+  getEverything
 }
