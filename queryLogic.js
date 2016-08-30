@@ -89,7 +89,8 @@ const User = {
     return db.oneOrNone(
       'SELECT * FROM users WHERE email=$1 AND password=$2', [email, password]
     )
-  }
+  },
+  findById: id => db.one( 'SELECT * FROM users WHERE id=$1', [id] )
 }
 
 module.exports = {
