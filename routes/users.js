@@ -32,7 +32,9 @@ router.post( '/signup', (request, response, next) => {
         response.redirect( '/' )
       })
     })
-    .catch( error => next( error ))
+    .catch( error => {
+      response.render( 'auth/signup', { message: 'That email address is not available.' })
+    })
 })
 
 router.get( '/logout', (request, response) => {
