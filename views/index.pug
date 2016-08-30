@@ -1,6 +1,35 @@
 extends layout
 
 block content
-  h1 myBookstore :D 
-  p Welcome to A Place
-  p=data.title
+  .container
+    h3 Available Books
+    div.container
+      
+      
+  .container.col-lg-12.col-md-12.col-sm-12.col-xs-12
+    each data.length in data
+      div.container
+        .col-md-2.col-sm-2.col-xs-6
+          div
+            p=data[val]
+            //- .authors[0].name
+        //- .col-md-3.col-sm-3.pull-left-xs.col-xs-6
+        //-   a(href="/books/"+book.id)
+        //-     h3=book.title
+        //- .col-md-7.col-sm-7.col-xs-12.evenSpaceGiver
+        //-   p=book.description
+    div.prevnext
+      div.prevnext
+        if page > 1
+          a(href="/?page="+(page-1)) Prev
+      div.prevnext
+        a(href="/?page="+(page+1)) Next
+
+
+//- td= //book.id
+            //- td
+            //-   for author in book.authors
+            //-     span= author.author
+            //- td
+            //-   for genre in book.genres
+            //-     span= genre.genre += ', '

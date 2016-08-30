@@ -89,8 +89,6 @@ const getEverything = book => {
   return Promise.all([
     getAllTheThings()
   ]).then( results => {
-
-    console.log(results)
     const reducer = (memo, row) => {
       let index = memo.findIndex( element => element.id === row.id )
 
