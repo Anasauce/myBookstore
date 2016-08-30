@@ -50,19 +50,23 @@ const getSingleBook = bookId => {
 }
 
 const getEverything = book => {
-//  getAllBooks()
-  return getAllBooks()
-  .then {
-    // map through book data
-    // asign book_id to variable
-    map(book => {
-      const bookId = book.id 
-    }) 
-    // pipe that data into a promise
-      // promise calls get genre by book_id
-      // and get author by book_id
-    // pipe in 
-  }
+  return getAllBooks().then(books => {
+    const bookId = books.map(book => book.id)
+    
+    return Promise.all([
+      // getGenreByBookId(bookId),
+      getAuthorByBookId(bookId),
+      console.log('oh hai bookid ->', bookId)
+    ]).then(data => {
+      return data
+      // return Object.assign(
+      //   data[0], 
+      //   { authors: data[1] }, 
+      //   { genres: data[2] }
+      // )
+    })
+  
+  })
 
 }
 
@@ -84,5 +88,5 @@ const getEverything = book => {
 
 module.exports = { 
   getSingleBook,
-  // getEverything: getEverything
+  getEverything
 }
