@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+  if message
+    div.error-message= message
+
+  form(method='post')
+    input(type='text', name='email')
+    input(type='password', name='password')
+    input(type='submit', value='Submit')

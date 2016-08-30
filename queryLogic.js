@@ -3,7 +3,10 @@ const connectionString = `postgres://${process.env.USER}@localhost:5432/${databa
 const pgp = require('pg-promise')()
 const db = pgp(connectionString)
 
-//get single book 
+var bcrypt = require('bcrypt')
+const saltRounds = 10
+
+//get single book
 const getBookById = bookId => db.one("SELECT * FROM books WHERE books.id=$1", [bookId])
 
 //get all books
@@ -17,8 +20,8 @@ const getGenreByBookId = bookId => {
     LEFT JOIN book_genres
     ON genres.id = book_genres.genre_id
     WHERE book_genres.book_id=$1
-  ` 
-  return db.any(sql, [bookId]) 
+  `
+  return db.any(sql, [bookId])
 }
 
 //get author by book_id
@@ -41,8 +44,8 @@ const getSingleBook = bookId => {
   ]).then(data => {
     console.log(data[0] instanceof Array)
     return Object.assign(
-      data[0], 
-      { authors: data[2] }, 
+      data[0],
+      { authors: data[2] },
       { genres: data[1] }
     )
   })
@@ -51,19 +54,19 @@ const getSingleBook = bookId => {
 const getEverything = book => {
   return getAllBooks().then(books => {
     const bookIds = books.map(book => book.id)
-    
+
     return Promise.all([
       getGenreByBookId(bookIds),
       getAuthorByBookId(bookIds),
     ]).then(data => {
       return Object.assign(
         { bookIds },
-        { authors: data[1] }, 
+        { authors: data[1] },
         { genres: data[2] }
       )
 
     })
-  
+
   })
 
 }
@@ -83,8 +86,62 @@ const getEverything = book => {
 //     })
 // }
 
+const createSalt = password => {
+  return new Promise( (resolve, reject) => {
+    bcrypt.genSalt( saltRounds, (error, salt) => {
+      if( error ) {
+        reject( error )
+      }
 
-module.exports = { 
+      resolve([ salt, password ])
+    })
+  })
+}
+
+const hashPassword = saltResult => {
+  const [ salt, password ] = saltResult
+
+  return new Promise( (resolve, reject) => {
+      bcrypt.hash( password, salt, (error, hash) => {
+        if( error ) {
+          reject( error )
+        }
+
+        resolve( hash )
+      })
+  })
+}
+
+const comparePassword = (password, user) => {
+  return new Promise( (resolve, reject) => {
+    bcrypt.compare( password, user.password, (err, result) => {
+      const data = result ? user : null
+
+      resolve( data )
+    })
+  })
+}
+
+const User = {
+  find: (email, password) => {
+    return db.oneOrNone( 'SELECT * FROM users WHERE email=$1', [email] )
+      .then( user => comparePassword( password, user ))
+  },
+  findById: id => db.one( 'SELECT * FROM users WHERE id=$1', [id] ),
+  createOne: (email, password) => {
+    return createSalt( password )
+      .then( hashPassword )
+      .then( hash => {
+        return db.one(
+          'INSERT INTO users(email, password) VALUES ($1, $2) RETURNING *',
+          [email, hash]
+        )
+      })
+  }
+}
+
+module.exports = {
   getSingleBook,
+  User
   //getEverything
 }
