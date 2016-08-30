@@ -16,9 +16,8 @@ const getGenreByBookId = bookId => {
     FROM genres
     LEFT JOIN book_genres
     ON genres.id = book_genres.genre_id
-    WHERE book_genres.book_id
-    IN ($1:csv) 
-  ` //what does csv mean?
+    WHERE book_genres.book_id=$1
+  ` 
   return db.any(sql, [bookId]) 
 }
 
@@ -51,19 +50,18 @@ const getSingleBook = bookId => {
 
 const getEverything = book => {
   return getAllBooks().then(books => {
-    const bookId = books.map(book => book.id)
+    const bookIds = books.map(book => book.id)
     
     return Promise.all([
-      // getGenreByBookId(bookId),
-      getAuthorByBookId(bookId),
-      console.log('oh hai bookid ->', bookId)
+      getGenreByBookId(bookIds),
+      getAuthorByBookId(bookIds),
     ]).then(data => {
-      return data
-      // return Object.assign(
-      //   data[0], 
-      //   { authors: data[1] }, 
-      //   { genres: data[2] }
-      // )
+      return Object.assign(
+        { bookIds },
+        { authors: data[1] }, 
+        { genres: data[2] }
+      )
+
     })
   
   })
@@ -88,5 +86,5 @@ const getEverything = book => {
 
 module.exports = { 
   getSingleBook,
-  getEverything
+  //getEverything
 }
