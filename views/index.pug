@@ -1,23 +1,31 @@
 extends layout
 
 block content
-  .container
+  .container-fluid
     h3 Available Books
-    div.container
-      
-      
-  .container.col-lg-12.col-md-12.col-sm-12.col-xs-12
-    each data.length in data
-      div.container
-        .col-md-2.col-sm-2.col-xs-6
-          div
-            p=data[val]
-            //- .authors[0].name
-        //- .col-md-3.col-sm-3.pull-left-xs.col-xs-6
-        //-   a(href="/books/"+book.id)
-        //-     h3=book.title
-        //- .col-md-7.col-sm-7.col-xs-12.evenSpaceGiver
-        //-   p=book.description
+  .container-fluid
+    div.prevnext
+    div.prevnext
+      if page > 1
+        a(href="/?page="+(page-1)) Prev
+    div.prevnext
+      a(href="/?page="+(page+1)) Next
+  .container-fluid
+    each item in data
+      .container-fluid
+        h3.title= item.title
+        .col-lg-2.col-md-2.col-sm-3.col-xs-6
+          img.img-responsive(src=item.img_url)
+        .col-lg-3.col-md-3.col-sm-9.col-xs-6
+            .authors
+              each author in item.authors
+                a(href=`/authors/${author.id}`)= author.name
+
+            .authors
+              each genre in item.genres
+                p=genre.title
+        .col-lg-7.col-md-7.col-sm-9.col-xs-12
+          p.title= item.description
     div.prevnext
       div.prevnext
         if page > 1
