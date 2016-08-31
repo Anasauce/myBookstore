@@ -4,7 +4,39 @@ block content
   if message
     div.error-message= message
 
-  form(method='post')
-    input(type='text', name='email')
-    input(type='password', name='password')
-    input(type='submit', value='Submit')
+  .container
+    h1 Formulaire fluide
+    form(action='destination.php')
+      div
+        p
+          label(for='name') E-mail : 
+          input#name(type='text', autofocus='')
+        p
+          label(for='email') Password :
+          input#email(type='email')
+        p
+          h5
+            | This form is for administrators of this site only
+        p
+          input(type='submit', value='Envoyer')
+
+
+  //- form(method='post')
+  //-   .form-group.row
+  //-     label.col-sm-3.col-form-label(for='inputEmail3') Email
+  //-     .col-sm-8
+  //-       input#inputEmail3.form-control(type='text', name='email')
+  //-   .form-group.row
+  //-     label.col-sm-3.col-form-label(for='inputPassword3') Password
+  //-     .col-sm-8
+  //-       input#inputPassword3.form-control(type='password', name='password')
+  //-   .form-group.row
+  //-     .offset-sm-3.col-sm-10
+  //-       button.btn.btn-primary(type='submit', value='Submit') Sign in
+
+
+
+  //- form(method='post')
+  //-   input(type='text', name='email')
+  //-   input(type='password', name='password')
+  //-   input(type='submit', value='Submit')
