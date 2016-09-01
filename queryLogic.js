@@ -6,9 +6,7 @@ const db = pgp(connectionString)
 var bcrypt = require('bcrypt')
 const saltRounds = 10
 
-//get single book
 const getBookById = bookId => db.one("SELECT * FROM books WHERE books.id=$1", [bookId])
-
 const getAllGenres = () => db.any('SELECT * FROM genres')
 const getAllAuthors = () => db.any('SELECT * FROM authors')
 
@@ -25,10 +23,8 @@ const getAllAuthorsAndGenres = () => {
   })
 }
 
-//get all books
 const getAllBooks = () => db.any('SELECT * FROM books')
 
-//get genre by book_id
 const getGenreByBookId = bookId => {
   const sql = `
     SELECT genres.*, book_genres.book_id
@@ -38,10 +34,6 @@ const getGenreByBookId = bookId => {
     WHERE book_genres.book_id=$1
   `
   return db.any(sql, [bookId])
-}
-
-const getSingleBookDetails = bookId => {
-  //stuff
 }
 
 const getAllTheThings = () => {
@@ -56,7 +48,24 @@ const getAllTheThings = () => {
   return db.any( sql )
 }
 
-//get author by book_id
+const allBooks = offset =>
+  db.any( 'SELECT * FROM books LIMIT 10 OFFSET $1', [ offset ] )
+
+const bookCount = () =>
+  db.one( 'SELECT COUNT(*) FROM books' )
+
+const bookGenres = bookIds =>
+  db.any( `
+    SELECT * FROM genres
+    JOIN book_genres ON book_genres.genre_id=genres.id
+    WHERE book_genres.book_id IN ($1:csv)`,
+    [ bookIds ]
+  )
+
+const bookAuthors = bookIds =>
+  db.any( 'SELECT * FROM authors JOIN book_authors ON book_authors.author_id=authors.id WHERE book_authors.book_id IN ($1:csv)', [ bookIds ] )
+
+
 const getAuthorByBookId = bookId => {
   const sql = `
     SELECT authors.*, book_authors.book_id
@@ -103,73 +112,50 @@ const genres = (current=[], id, title) => {
   return current
 }
 
+const getEverything = page => {
+  return allBooks( 10 * (page-1) )
+    .then( books => {
+      const ids = books.map( book => book.id )
 
+      return Promise.all([
+        bookCount(),
+        bookGenres( ids ),
+        bookAuthors( ids ),
+        new Promise( (resolve, reject) => resolve( books ))
+      ])
+    })
+    .then( result => {
+      const [ count, genres, authors, books ] = result
 
-const getEverything = book => {
-  return Promise.all([
-    getAllTheThings()
-  ]).then( results => {
-    const reducer = (memo, row) => {
-      let index = memo.findIndex( element => element.id === row.id )
+      const mergedBooks = books.map( book => {
+        const bookAuthors = authors.filter( author => author.book_id === book.id )
+        const bookGenres = genres.filter( genre => genre.book_id === book.id )
 
-      if( index === -1 ) {
-        memo.push( row )
-        index = memo.length - 1
-      }
+        return Object.assign( {}, book, { authors: bookAuthors, genres: bookGenres  })
+      })
 
-      const book = memo[ index ]
-
-      memo[ index ] = Object.assign( 
-        {},
-        { id: book.id, title: book.title, description: book.description, img_url: book.img_url },
-        { authors: authors( book.authors, row.author_id, row.name ) },
-        { genres: genres( book.genres, row.genre_id, row.genre_title )}
-      )
-
-      return memo
-    }
-
-    return results[ 0 ].reduce( reducer, [] )
-  })
+      return new Promise( (resolve, reject) => resolve({ books: mergedBooks, count: count.count }))
+    })
 }
 
 //Admin user can enter new books into the database
 
 const createBookSql = `
-  INSERT INTO 
-    book (title, description, img_url)
-  VALUES 
-    ($1, $2, $3) 
-  RETURNING
-    *
-`
-// const createBook = book => {
-//   return generateBookEntry( book )
-//     .then( addAuthorsAndGenres )
-//     .then( respondWithBookId )
-// }
+  INSERT INTO book (title, description, img_url)
+  VALUES ($1, $2, $3) RETURNING *`
 
 const createAuthor = name => {
-  const sql = `
-    INSERT INTO
-      author (name)
-    VALUES
-      ($1)
-    RETURNING 
-      *
-  `
+  const sql = `INSERT INTO author ( name ) VALUES ( $1 ) RETURNING *`
+
   return db.one(sql, [name])
 }
 
 const createBook = function(book){
   const sql = `
-    INSERT INTO
-      books (title, description, img_url)
-    VALUES
-      ($1, $2, $3)
-    RETURNING
-      id
-  `
+    INSERT INTO books( title, description, img_url )
+    VALUES ( $1, $2, $3 )
+    RETURNING id`
+
   var queries = [
     db.one(sql, [
       book.title,
@@ -193,23 +179,7 @@ const createBook = function(book){
     })
 }
 
-// const generateBookEntry = book =>
-//   console.log(book)
-
-//   Promise.all([
-//     db.one( createBookSql, [ book.title, book.description, book.img_url ]),
-//   ])
-//   .then(book => {
-//     // new Promise( (resolve, reject) => resolve( book.genres ))
-//     console.log('its oook', book);
-
-
-//     // book.authors.filter( author => author.length > 0 )
-//     //   .map( author => createAuthor( author ) )
-//   })
-
 const addAuthorsAndGenres = results => {
-  
   const bookResult = results[ 0 ]
   const bookId = parseInt( bookResult.id )
 
@@ -223,38 +193,26 @@ const addAuthorsAndGenres = results => {
     joinGenresWithBook( genres, bookId ),
     new Promise( (resolve, reject) => resolve( bookId ) )
   ])
-}  
+}
 
 const respondWithBookId = results => results[ 2 ]
 
 const joinAuthorBookSql = `
-  INSERT INTO 
-    book_authors(book_id, author_id) 
-  VALUES 
-    ($1, $2) 
-  RETURNING 
-    *
-`
+  INSERT INTO book_authors(book_id, author_id)
+  VALUES ($1, $2)
+  RETURNING *`
+
 const joinAuthorsWithBook = (authorIds, bookId) => {
-  console.log('its', authorIds, bookId)
   db.one( joinAuthorBookSql, [ bookId, authorIds ])
-  
 }
 
 const joinGenreBookSql = `
-  INSERT INTO 
-    book_genres(book_id, genre_id) 
-  VALUES 
-    ($1, $2) 
-  RETURNING 
-    *
-`
+  INSERT INTO book_genres(book_id, genre_id)
+  VALUES ($1, $2) RETURNING *`
+
 const joinGenresWithBook = (genreIds, bookId) => {
   db.one( joinGenreBookSql, [ bookId, genreIds ])
 }
-
-//User can create an admin account
-//Auth is used for login
 
 const createSalt = password => {
   return new Promise( (resolve, reject) => {
@@ -314,12 +272,11 @@ module.exports = {
   getSingleBook,
   User,
   getEverything,
-  createBook, 
-  createAuthor, 
-  joinGenresWithBook, 
+  createBook,
+  createAuthor,
+  joinGenresWithBook,
   joinAuthorsWithBook,
   getAllAuthors,
   getAllGenres,
-  getAllAuthorsAndGenres,
-  getSingleBookDetails
+  getAllAuthorsAndGenres
 }
