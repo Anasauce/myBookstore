@@ -1,5 +1,4 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -16,6 +15,11 @@ a {
 }
 
 .logo {
-  width: 50%;
-  height: 50%;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.logocontainer {
+  max-width: 100px;
+  max-height: 100px;
 }
