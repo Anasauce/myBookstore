@@ -1,10 +1,15 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
 }
 
-h1,h2,h3,h4,h5 {
+h1 {
   font-family: 'Monoton', cursive;
+}
+
+h2,h3,h4,h5 {
+  font-family: 'Raleway', sans-serif;
 }
 
 a {
@@ -19,3 +24,21 @@ a {
   width: 50%;
   height: 50%;
 }
+
+.book-detail {
+  margin-top: 50px;
+  margin-left: 100px;
+}
+
+.book-img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto 
+}
+
+.book-title {
+  font-size: 40px 
+
+
+
+  
