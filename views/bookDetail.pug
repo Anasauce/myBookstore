@@ -2,10 +2,19 @@ extends layout
 
 block content
 
-  .container-fluid
-    h3= singleBook.title
-    each item in singleBook.authors
-      p= item.name
-    each item in singleBook.genres
-      p= item.title
+  .book-detail.row.container-fluid
+  .col-md-4
+    img.book-img.img-responsive(src=singleBook.img_url)
+    br
     a(href=`/book/${singleBook.id}/delete`) delete book
+  .col-md-8.details 
+    h2.book-title= singleBook.title
+    each item in singleBook.authors
+      h4.sub-heading Author
+      h4= item.name
+    each item in singleBook.genres
+      h4.sub-heading Genre
+      h4= item.title
+    
+
+    
