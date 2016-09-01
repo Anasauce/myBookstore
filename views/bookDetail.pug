@@ -1,4 +1,11 @@
 extends layout
 
 block content
-  p oh hai book details go hereerererererer
+
+  .container-fluid
+    h3= singleBook.title
+    each item in singleBook.authors
+      p= item.name
+    each item in singleBook.genres
+      p= item.title
+    a(href=`/book/${singleBook.id}/delete`) delete book

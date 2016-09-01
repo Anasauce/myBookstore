@@ -63,7 +63,11 @@ const bookGenres = bookIds =>
   )
 
 const bookAuthors = bookIds =>
-  db.any( 'SELECT * FROM authors JOIN book_authors ON book_authors.author_id=authors.id WHERE book_authors.book_id IN ($1:csv)', [ bookIds ] )
+  db.any( `SELECT * FROM authors 
+    JOIN book_authors 
+    ON book_authors.author_id=authors.id 
+    WHERE book_authors.book_id 
+    IN ($1:csv)`, [ bookIds ] )
 
 
 const getAuthorByBookId = bookId => {
@@ -83,7 +87,6 @@ const getSingleBook = bookId => {
     getGenreByBookId(bookId),
     getAuthorByBookId(bookId),
   ]).then(data => {
-    console.log(data[0] instanceof Array)
     return Object.assign(
       data[0],
       { authors: data[2] },
@@ -137,6 +140,18 @@ const getEverything = page => {
       return new Promise( (resolve, reject) => resolve({ books: mergedBooks, count: count.count }))
     })
 }
+
+
+
+//admin users can delete books
+const deleteBook = bookId => {
+  const sql = `DELETE FROM books 
+  WHERE id=$1`
+  return db.none(sql, [bookId])
+}
+
+
+
 
 //Admin user can enter new books into the database
 
@@ -278,5 +293,6 @@ module.exports = {
   joinAuthorsWithBook,
   getAllAuthors,
   getAllGenres,
-  getAllAuthorsAndGenres
+  getAllAuthorsAndGenres,
+  deleteBook
 }
