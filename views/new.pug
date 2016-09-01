@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  if message
+    div.error-message= message
+
+  p Hey let's add a book!
+
+  form(method='post' action='/book/new')
+    p Book Title 
+      input(type='text', name='title')
+    p Image URL 
+      input(type='text', name='img_url')
+    p Description 
+      input(type='text', name='description')
+    div
+      select(name='genres')
+        each genre in choices.genres
+          option(value=genre.id)
+            p=genre.title
+    div
+      select(name='authors')
+        each author in choices.authors
+          option(value=author.id)
+            p=author.name
+    input(type='submit', value='Submit')
