@@ -9,8 +9,24 @@ const saltRounds = 10
 //get single book
 const getBookById = bookId => db.one("SELECT * FROM books WHERE books.id=$1", [bookId])
 
+const getAllGenres = () => db.any('SELECT * FROM genres')
+const getAllAuthors = () => db.any('SELECT * FROM authors')
+
+const getAllAuthorsAndGenres = () => {
+  return Promise.all([
+    getAllAuthors(),
+    getAllGenres(),
+  ])
+    .then(choices => {
+      return Object.assign(
+      { authors: choices[0] },
+      { genres: choices[1] }
+      )
+  })
+}
+
 //get all books
-const getAllBooks = () => db.any("SELECT * FROM books")
+const getAllBooks = () => db.any('SELECT * FROM books')
 
 //get genre by book_id
 const getGenreByBookId = bookId => {
@@ -22,6 +38,10 @@ const getGenreByBookId = bookId => {
     WHERE book_genres.book_id=$1
   `
   return db.any(sql, [bookId])
+}
+
+const getSingleBookDetails = bookId => {
+  //stuff
 }
 
 const getAllTheThings = () => {
@@ -113,20 +133,128 @@ const getEverything = book => {
   })
 }
 
-// const getEverythingByBookId = bookId => {
-//   console.log('begining of everything by book id', bookId)
-//   return Promise.all([
-//     getAllBooks(),
-//     getGenreByBookId(bookId),
-//     getAuthorByBookId(bookId),
-//     ]).then(data => {
-//       console.log('I love data', data)
-//       let book = data[0]
-//       book.authors = data[2]
-//       book.genres = data[1]
-//       return book
-//     })
+//Admin user can enter new books into the database
+
+const createBookSql = `
+  INSERT INTO 
+    book (title, description, img_url)
+  VALUES 
+    ($1, $2, $3) 
+  RETURNING
+    *
+`
+// const createBook = book => {
+//   return generateBookEntry( book )
+//     .then( addAuthorsAndGenres )
+//     .then( respondWithBookId )
 // }
+
+const createAuthor = name => {
+  const sql = `
+    INSERT INTO
+      author (name)
+    VALUES
+      ($1)
+    RETURNING 
+      *
+  `
+  return db.one(sql, [name])
+}
+
+const createBook = function(book){
+  const sql = `
+    INSERT INTO
+      books (title, description, img_url)
+    VALUES
+      ($1, $2, $3)
+    RETURNING
+      id
+  `
+  var queries = [
+    db.one(sql, [
+      book.title,
+      book.description,
+      book.img_url
+    ])
+  ]
+
+  return Promise.all(queries)
+    .then(results => {
+      const [ newBook ] = results
+
+      console.log(newBook)
+
+      return Promise.all([
+        joinAuthorsWithBook(book.authors, newBook.id),
+        joinGenresWithBook(book.genres, newBook.id)
+      ]).then(function(){
+        return newBook.id;
+      })
+    })
+}
+
+// const generateBookEntry = book =>
+//   console.log(book)
+
+//   Promise.all([
+//     db.one( createBookSql, [ book.title, book.description, book.img_url ]),
+//   ])
+//   .then(book => {
+//     // new Promise( (resolve, reject) => resolve( book.genres ))
+//     console.log('its oook', book);
+
+
+//     // book.authors.filter( author => author.length > 0 )
+//     //   .map( author => createAuthor( author ) )
+//   })
+
+const addAuthorsAndGenres = results => {
+  
+  const bookResult = results[ 0 ]
+  const bookId = parseInt( bookResult.id )
+
+  const genres = results[ 1 ]
+
+  const authors = results.slice( 2 )
+  const authorIds = authors.map( author => author.id )
+
+  return Promise.all([
+    joinAuthorsWithBook( authorIds, bookId ),
+    joinGenresWithBook( genres, bookId ),
+    new Promise( (resolve, reject) => resolve( bookId ) )
+  ])
+}  
+
+const respondWithBookId = results => results[ 2 ]
+
+const joinAuthorBookSql = `
+  INSERT INTO 
+    book_authors(book_id, author_id) 
+  VALUES 
+    ($1, $2) 
+  RETURNING 
+    *
+`
+const joinAuthorsWithBook = (authorIds, bookId) => {
+  console.log('its', authorIds, bookId)
+  db.one( joinAuthorBookSql, [ bookId, authorIds ])
+  
+}
+
+const joinGenreBookSql = `
+  INSERT INTO 
+    book_genres(book_id, genre_id) 
+  VALUES 
+    ($1, $2) 
+  RETURNING 
+    *
+`
+const joinGenresWithBook = (genreIds, bookId) => {
+  db.one( joinGenreBookSql, [ bookId, genreIds ])
+}
+
+//User can create an admin account
+//Auth is used for login
 
 const createSalt = password => {
   return new Promise( (resolve, reject) => {
@@ -185,5 +313,13 @@ const User = {
 module.exports = {
   getSingleBook,
   User,
-  getEverything
+  getEverything,
+  createBook, 
+  createAuthor, 
+  joinGenresWithBook, 
+  joinAuthorsWithBook,
+  getAllAuthors,
+  getAllGenres,
+  getAllAuthorsAndGenres,
+  getSingleBookDetails
 }
