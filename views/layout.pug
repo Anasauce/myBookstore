@@ -8,15 +8,18 @@ html
     link(rel="stylesheet" href="/stylesheets/style.css")
     block title
       title myBookstore: Tech Resources
-  body
-    .container-fluid.header
-      .container-fluid.col-lg-2.col-md-2.col-sm-3.col-xs-12
+  body.container-fluid
+    .col-lg-1.col-md-1.col-sm-3.col-xs-12
+      .logocontainer
         img.logo(src='https://pbs.twimg.com/profile_images/503696801161953281/IyV59ozo_400x400.png')
       .container-fluid.col-lg-10.col-md-10.col-sm-9.col.xs-12
         h1 myBookstore
       form(action="/", method="get")
         input.form-control(type="text", name="search_query", placeholder="Author, Title, Genre")
         input.btn.pull-right(type="submit", value="find")
+    .col-lg-7.col-md-7.col-sm-9.col.xs-12
+      h1 myBookstore
+
     block content
 
 
