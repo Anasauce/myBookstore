@@ -1,24 +1,25 @@
 doctype html
 html
   head
-    link(href="https://fonts.googleapis.com/css?family=Bungee+Hairline|Bungee+Shade|Monoton" rel="stylesheet")
+    link(href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet")
     <link href="https://fonts.googleapis.com/css?family=Dosis|Gudea|Quattrocento+Sans" rel="stylesheet">
     link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous")
     link(rel="stylesheet" href="/stylesheets/style.css")
     block title
       title myBookstore: Tech Resources
   body.container-fluid
-    .col-lg-1.col-md-1.col-sm-3.col-xs-12
-      .logocontainer
-        img.logo(src='https://pbs.twimg.com/profile_images/503696801161953281/IyV59ozo_400x400.png')
-      .container-fluid.col-lg-10.col-md-10.col-sm-9.col.xs-12
-        h1 myBookstore
-      form(action="/", method="get")
-        input.form-control(type="text", name="search_query", placeholder="Author, Title, Genre")
-        input.btn.pull-right(type="submit", value="find")
-    .col-lg-7.col-md-7.col-sm-9.col.xs-12
-      h1 myBookstore
-
+    .header.col-lg-12.col-md-12.col-sm-12.col-xs-12.container-fluid
+      .container-fluid.col-lg-1.col-md-1.col-sm-2.col-xs-6
+        .logocontainer
+          img.logo(src='https://pbs.twimg.com/profile_images/503696801161953281/IyV59ozo_400x400.png')
+      .container-fluid.col-lg-7.col-md-7.col-sm-6.col.xs-6
+        h1.logotype myBookstore
+      .container-fluid.col-lg-4.col-md-4.col-sm-4.col.xs-6
+        .container-fluid.col-lg-9.col-md-9.col-sm-9.col.xs-12
+          form(action="/", method="get")
+            input.form(type="text", name="search_query", placeholder="Author, Title, Genre")
+        .container-fluid.col-lg-3.col-md-3.col-sm-3.col.xs-12
+            input.btn.pull-right(type="submit", value="find")
     block content
 
 

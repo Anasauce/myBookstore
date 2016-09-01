@@ -1,8 +1,8 @@
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px "Quattrocento Sans", Helvetica, Arial, sans-serif;
 }
 
-h1,h2,h3,h4,h5 {
+h1 {
   font-family: 'Monoton', cursive;
 }
 
@@ -12,6 +12,8 @@ a {
 
 .header {
   background-color: #8dd8c0;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .logo {
@@ -20,6 +22,32 @@ a {
 }
 
 .logocontainer {
-  max-width: 100px;
-  max-height: 100px;
+  max-width: 75px;
+  max-height: 75px;
+}
+
+.logotype {
+  max-width: 100%;
+}
+
+.btn {
+  border-radius: 0;
+  background-color:#54b1c5;
+  color: #fff;
+  font: 14px "Quattrocento Sans", Helvetica, Arial, sans-serif;
+}
+
+.btn:hover {
+  background-color: #67bacb;
+  color: #fff;
+}
+
+.form {
+  font-size: .8em;
+  border-radius: 0;
+  border:0 solid transparent;
+  background-position:right 50%;
+  background-repeat:no-repeat;
+  padding: 6px;
+  font: 14px "Quattrocento Sans", Helvetica, Arial, sans-serif;
 }
