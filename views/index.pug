@@ -10,21 +10,19 @@ block content
 
     .container-fluid
       each book in books
-        .container-fluid
-          .col-lg-2.col-md-2.col-sm-3.col-xs-6
+        .container-fluid.spacegiver
+          .col-lg-1.col-md-1.col-sm-1.col-xs-3
             img.img-responsive(src=book.img_url)
-
-          .col-lg-3.col-md-3.col-sm-9.col-xs-6
-            h3.title= book.title
+          .col-lg-5.col-md-5.col-sm-5.col-xs-9
+            h3.title
+              a(href=`/book/${book.id}`)= book.title
+          .col-lg-6.col-md-6.col-sm-6.col-xs-9
             .authors
               each author in book.authors
-                a(href=`/authors/${author.id}`)= author.name
-
+                span=author.name
             .genres
               each genre in book.genres
-                p=genre.title
-          .col-lg-7.col-md-7.col-sm-9.col-xs-12
-            p.title= book.description
+                span=genre.title += ', '
 
     .container-fluid
       if page > 1

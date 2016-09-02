@@ -13,6 +13,7 @@ h2,h3,h4,h5 {
 
 a {
   color: #00B7FF;
+  text-decoration: none;
 }
 
 .header {
@@ -22,8 +23,8 @@ a {
 }
 
 .logo {
-  width: 50%;
-  height: 50%;
+  width: 100%;
+  height: 100%;
 }
 
 .book-img {
@@ -88,6 +89,17 @@ a {
   max-width: 100%;
 }
 
+.subhead {
+  font-size: 1em;
+  margin-top: 0;
+  font-color: #fff;
+  text-decoration: none;
+}
+
+.spacegiver {
+  margin: 5px;
+}
+
 .btn {
   border-radius: 0;
   background-color:#54b1c5;
@@ -98,6 +110,11 @@ a {
 .btn:hover {
   background-color: #67bacb;
   color: #fff;
+}
+
+.search-space {
+  margin-top:25px;
+  margin-bottom:auto;
 }
 
 .form {
@@ -122,3 +139,9 @@ a {
 .description {
   line-height: 1.5em;
 }
+
+.title {
+  margin-top: 0px;
+}
+
+

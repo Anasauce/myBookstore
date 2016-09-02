@@ -12,12 +12,15 @@ html
     .header.col-lg-12.col-md-12.col-sm-12.col-xs-12.container-fluid
       .container-fluid.col-lg-1.col-md-1.col-sm-2.col-xs-6
         .logocontainer
-          img.logo(src='https://pbs.twimg.com/profile_images/503696801161953281/IyV59ozo_400x400.png')
+          a(href=`/`)
+            img.logo(src='https://pbs.twimg.com/profile_images/503696801161953281/IyV59ozo_400x400.png')
       .container-fluid.col-lg-7.col-md-7.col-sm-6.col.xs-6
-        h1.logotype myBookstore
-      .container-fluid.col-lg-4.col-md-4.col-sm-4.col.xs-6
+        a.logotype(href=`/`)
+          h1 myBookstore
+        h3.subhead Web Development Books for Everybody
+      .container-fluid.col-lg-4.col-md-4.col-sm-4.col.xs-6.search-space
         .container-fluid.col-lg-9.col-md-9.col-sm-9.col.xs-12
-          form(action="/", method="get")
+          form(action="/", method="get").pull-right
             input.form(type="text", name="search_query", placeholder="Author, Title, Genre")
         .container-fluid.col-lg-3.col-md-3.col-sm-3.col.xs-12
             input.btn.pull-right(type="submit", value="find")
