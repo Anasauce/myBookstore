@@ -4,23 +4,35 @@ block content
   if message
     div.error-message= message
 
-  p Hey let's add a book!
-
-  form(method='post' action='/book/new')
-    p Book Title 
-      input(type='text', name='title')
-    p Image URL 
-      input(type='text', name='img_url')
-    p Description 
-      input(type='text', name='description')
-    div
-      select(name='genres')
-        each genre in choices.genres
-          option(value=genre.id)
-            p=genre.title
-    div
-      select(name='authors')
-        each author in choices.authors
-          option(value=author.id)
-            p=author.name
-    input(type='submit', value='Submit')
+  .container.form-margin
+    h2.top-margin Hey let's add a book!
+    form(method='post' action='/book/new')
+      .form-group.row.form-space
+        label.col-sm-2.col-form-label Book Title
+        .col-lg-8-.col-sm-10 
+          input.form-control(type='text', name='title')
+      .form-group.row.form-space
+        label.col-sm-2.col-form-label Image URL
+        .col-lg-8-.col-sm-10 
+          input.form-control(type='text', name='img_url')
+      .form-group.row.form-space 
+        label.col-sm-2.col-form-label Description 
+        .col-lg-8-.col-sm-10  
+          textarea.form-control(type='text', name='description')
+      .form-group.row.form-space
+        label.col-sm-2.col-form-label Genre
+        .col-lg-8-.col-sm-10
+          select.form-control(name='genres')
+            each genre in choices.genres
+              option(value=genre.id)
+                p=genre.title
+      .form-group.row.form-space
+        label.col-sm-2.col-form-label Author
+        .col-lg-8-.col-sm-10
+          select.form-control(name='authors')
+            each author in choices.authors
+              option(value=author.id)
+                p=author.name
+      .form-group.row
+        .offset-sm-2.col-sm-10        
+          input.btn(type='submit', value='Submit')
