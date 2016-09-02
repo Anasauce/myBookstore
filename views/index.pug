@@ -4,9 +4,9 @@ block content
   .col-lg-12.col-md-12.col-sm-12.col-xs-12
     .container-fluid
       if page > 1
-        a(href=`/?pages=${page - 1}`) Prev
+        a.btn(href=`/?pages=${page - 1}`) Prev
       if page < pages
-        a(href=`/?page=${page + 1}`) Next
+        a.btn(href=`/?page=${page + 1}`) Next
 
     .container-fluid
       each book in books
@@ -26,6 +26,6 @@ block content
 
     .container-fluid
       if page > 1
-        a(href=`/?pages=${page - 1}`) Prev
+        a.btn(href=`/?pages=${page - 1}`) Prev
       if page < pages
-        a(href=`/?page=${page + 1}`) Next
+        a.btn(href=`/?page=${page + 1}`) Next
