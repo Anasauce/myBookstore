@@ -229,6 +229,17 @@ const joinGenresWithBook = (genreIds, bookId) => {
   db.one( joinGenreBookSql, [ bookId, genreIds ])
 }
 
+
+
+const updateBook = (id, title, author, image_url) => {
+  const sql = `UPDATE books SET title=$1, description=$2, img_url=$3 WHERE id=$4`
+
+  return db.none( sql, [title, description, img_url, id] )
+}
+
+
+
+
 const createSalt = password => {
   return new Promise( (resolve, reject) => {
     bcrypt.genSalt( saltRounds, (error, salt) => {

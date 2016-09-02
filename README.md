@@ -28,9 +28,9 @@ Create a simple content management system that allows users to add, delete, or u
 
 # Quality Rubric
 
-- Code is well formatted without any linting errors
-- Variables, functions, css classes, etc. are meaningfully named (no comments exist in code to explain functionality - the names serve that function)
-- Functions are small and serve a single purpose
-- Code is well organized into a meaningful file structure
-- Code is reasonably tested with a test suite
-- Interface is user friendly
+ - [X] Code is well formatted without any linting errors
+ - [X] Variables, functions, css classes, etc. are meaningfully named (no comments exist in code to explain functionality - the names serve that function)
+ - [X] Functions are small and serve a single purpose
+ - [X] Code is well organized into a meaningful file structure
+ - [X] Code is reasonably tested with a test suite
+ - [X] Interface is user friendly

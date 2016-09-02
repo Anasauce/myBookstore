@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  form(method='post', action=`/book/update/${book.id}`)
+    .container-fluid.col-lg-2.col-md-2.col-sm-3.col-xs-3
+      label(for='title') Title: 
+    div
+      input.form-control(type='text', name='title', placeholder='Title', value=`${book.title}`)
+    .container-fluid.col-lg-2.col-md-2.col-sm-3.col-xs-3
+      label(for='description') Description:
+    div
+      textarea.form-control(name='description', value=`${book.description}`)=book.description
+    .container-fluid.col-lg-2.col-md-2.col-sm-3.col-xs-3
+      label(for='img_url') Image URL:
+    div
+      input.form-control(type='text', name='img_url', placeholder='Image URL', value=`${book.img_url}`)
+
+    .container-fluid.col-lg-12.col-md-12.col-sm-12.col-xs-12
+      button(type='submit') Update
