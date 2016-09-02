@@ -3,8 +3,17 @@ extends ../layout
 block content
   if message
     div.error-message= message
-
-  form(method='post')
-    input(type='text', name='email')
-    input(type='password', name='password')
-    input(type='submit', value='Submit')
+  
+  .container.form-margin
+    form(method='post')
+      .form-group.row.top-margin  
+        label.col-sm-2.col-form-label Email
+        .col-lg-8-.col-sm-10
+          input.form-control(type='text', name='email')
+      .form-group.row
+        label.col-sm-2.col-form-label Password
+        .col-lg-8-.col-sm-10
+          input.form-control(type='password', name='password')
+      .form-group.row
+        .offset-sm-2.col-sm-10
+          input.btn(type='submit', value='Submit')
