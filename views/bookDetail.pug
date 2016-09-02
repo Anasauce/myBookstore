@@ -5,16 +5,16 @@ block content
   .book-detail.row.container-fluid
     .col-md-4
       img.book-img.img-responsive(src=singleBook.img_url)
-      br
-      a(href=`/book/${singleBook.id}/delete`) delete book
-    .col-md-8.details 
-      h2.book-title= singleBook.title
+    .col-md-8 
+      h2.details.book-title= singleBook.title
       each item in singleBook.authors
-        h4.sub-heading Author
-        h4= item.name
+        h3.details 
+          span(style='font-weight: bold;') Author: 
+          | #{item.name}  
       each item in singleBook.genres
-        h4.sub-heading Genre
-        h4= item.title
-    
-
-    
+        h3.details 
+          span(style='font-weight: bold;') Genre: 
+          | #{item.title}
+      h4.description= singleBook.description
+      .btn.edit-delete(style='display:inline-block')(href=`/book/${singleBook.id}/delete`) delete book
+      .btn.edit-delete(style='display:inline-block')(href=`/book/${singleBook.id}/edit`) edit book
