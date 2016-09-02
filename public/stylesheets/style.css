@@ -17,6 +17,8 @@ a {
 
 .header {
   background-color: #8dd8c0;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .logo {
@@ -44,6 +46,37 @@ a {
   margin-left: 100px;
   padding-top:100px;
   margin-right: 50px;
+}
+
+.logocontainer {
+  max-width: 75px;
+  max-height: 75px;
+}
+
+.logotype {
+  max-width: 100%;
+}
+
+.btn {
+  border-radius: 0;
+  background-color:#54b1c5;
+  color: #fff;
+  font: 14px "Quattrocento Sans", Helvetica, Arial, sans-serif;
+}
+
+.btn:hover {
+  background-color: #67bacb;
+  color: #fff;
+}
+
+.form {
+  font-size: .8em;
+  border-radius: 0;
+  border:0 solid transparent;
+  background-position:right 50%;
+  background-repeat:no-repeat;
+  padding: 6px;
+  font: 14px "Quattrocento Sans", Helvetica, Arial, sans-serif;
 }
 
 .logocontainer {
