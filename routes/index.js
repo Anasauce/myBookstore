@@ -12,7 +12,7 @@ router.get('/', (request, response) => {
       .then( data => {
         const { books, count } = data
         const pages = count / 10
-        response.render('index', { books, count, page, pages })
+        response.render('index', { books:books, count: count, page: page, pages: pages, loggedIn: request.user !== undefined })
       })
       .catch( error => response.send({ error, message: error.message }))
   } else {

@@ -20,6 +20,8 @@ html
       .container-fluid.col-lg-3.col-md-3.col-sm-4.col.xs-6.search-space
         a.btn(value="Admin Login" href='/users/login') Admin Login
         a.btn(value="Admin Signup" href='/users/signup') Admin Sign Up
+        if loggedIn
+          a.btn(href=`/book/new`) Add Book
       .container-fluid.col-lg-3.col-md-3.col-sm-12.col.xs-6.search-space
         form(action="/", method="get").pull-right
 

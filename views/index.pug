@@ -13,10 +13,10 @@ block content
         .container-fluid.spacegiver
           .col-lg-1.col-md-1.col-sm-1.col-xs-3
             img.img-responsive(src=book.img_url)
-          .col-lg-5.col-md-5.col-sm-5.col-xs-9
+          .col-lg-3.col-md-5.col-sm-5.col-xs-9
             h3.title
               a(href=`/book/${book.id}`)= book.title
-          .col-lg-6.col-md-6.col-sm-6.col-xs-9
+          .col-lg-8.col-md-6.col-sm-6.col-xs-9
             .authors
               each author in book.authors
                 span=author.name
