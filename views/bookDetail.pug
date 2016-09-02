@@ -20,5 +20,6 @@ block content
 
       h4.description= singleBook.description
 
-      a.btn.edit-delete(href=`/book/${singleBook.id}/delete`) delete book
-      a.btn.edit-delete(href=`/book/${singleBook.id}/edit`) edit book
+      if loggedIn
+        a.btn.edit-delete(href=`/book/${singleBook.id}/delete`) delete book
+        a.btn.edit-delete(href=`/book/${singleBook.id}/edit`) edit book
