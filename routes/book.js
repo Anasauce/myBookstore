@@ -26,8 +26,10 @@ router.get( '/singleBookJson/:id', (request, response) => {
 
 router.get( '/:id', (request, response) => {
   const bookId = request.params.id
+  
   queryLogic.getSingleBook(bookId)
-  .then(singleBook => response.render('bookDetail', {singleBook: singleBook}))
+    .then(singleBook => response.render('bookDetail', {singleBook: singleBook, loggedIn: request.user !== undefined }))
+    .catch( error => response.send({ error, message: error.message }) )
 })
 
 router.get('/:id/delete', (request, response) => {
@@ -35,6 +37,21 @@ router.get('/:id/delete', (request, response) => {
   queryLogic.deleteBook(bookId)
     .then(() => response.redirect('/'))
     .catch( error => response.send({ error, message: error.message }) )
+})
+
+router.get( '/:id/edit', (request, response) => {
+  queryLogic.getSingleBook( request.params.id )
+    .then( book => response.render( 'editBook', { book } ))
+    .catch( error => response.send({ message: error.message }))
+})
+
+router.post( '/update/:id', (request, response) => {
+  const { id } = request.params
+  const { title, description, img_url } = request.body
+
+  queryLogic.updateBook( id, title, description, img_url )
+    .then( result => response.redirect( `/book/${id}` ) )
+    .catch( error => response.send({ message: error.message }))
 })
 
 
