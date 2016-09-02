@@ -1,7 +1,18 @@
 extends ../layout
 
 block content
-  form(method='post', action='/users/login')
-    input(type='text', name='email')
-    input(type='password', name='password')
-    input(type='submit', value='Login')
+
+  .container.form-margin
+    h2.top-margin Administrator Login
+    form(method='post', action='/users/login')
+      .form-group.row.form-space
+        label.col-sm-2.col.form-label Email
+        .col-lg-8.col.sm-10   
+          input.form-control(type='text', name='email')
+      .form-group.row
+        label.col-sm-2.col.form-label Password
+        .col-lg-8.col.sm-10
+          input.form-control(type='password', name='password')
+      .form-group.row
+        .offset-sm-2.col-sm-10
+          input.btn(type='submit', value='Login')
