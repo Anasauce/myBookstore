@@ -141,17 +141,12 @@ const getEverything = page => {
     })
 }
 
-
-
 //admin users can delete books
 const deleteBook = bookId => {
   const sql = `DELETE FROM books 
   WHERE id=$1`
   return db.none(sql, [bookId])
 }
-
-
-
 
 //Admin user can enter new books into the database
 
@@ -229,6 +224,12 @@ const joinGenresWithBook = (genreIds, bookId) => {
   db.one( joinGenreBookSql, [ bookId, genreIds ])
 }
 
+const updateBook = (id, title, description, img_url) => {
+  const sql = 'UPDATE books SET title=$1, description=$2, img_url=$3 WHERE id=$4'
+
+  return db.none( sql, [title, description, img_url, id] )
+}
+
 const createSalt = password => {
   return new Promise( (resolve, reject) => {
     bcrypt.genSalt( saltRounds, (error, salt) => {
@@ -294,5 +295,8 @@ module.exports = {
   getAllAuthors,
   getAllGenres,
   getAllAuthorsAndGenres,
-  deleteBook
+  deleteBook,
+  updateBook,
+  bookGenres,
+  bookAuthors
 }

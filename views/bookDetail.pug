@@ -1,20 +1,25 @@
 extends layout
 
 block content
-
   .book-detail.row.container-fluid
     .col-md-4
       img.book-img.img-responsive(src=singleBook.img_url)
+
     .col-md-8 
       h2.details.book-title= singleBook.title
+
       each item in singleBook.authors
         h3.details 
-          span(style='font-weight: bold;') Author: 
+          span.bold Author: 
           | #{item.name}  
+
       each item in singleBook.genres
         h3.details 
-          span(style='font-weight: bold;') Genre: 
+          span.bold Genre: 
           | #{item.title}
+
       h4.description= singleBook.description
-      .btn.edit-delete(style='display:inline-block')(href=`/book/${singleBook.id}/delete`) delete book
-      .btn.edit-delete(style='display:inline-block')(href=`/book/${singleBook.id}/edit`) edit book
+
+      if loggedIn
+        a.btn.edit-delete(href=`/book/${singleBook.id}/delete`) delete book
+        a.btn.edit-delete(href=`/book/${singleBook.id}/edit`) edit book
