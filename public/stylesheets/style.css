@@ -13,6 +13,7 @@ h2,h3,h4,h5 {
 
 a {
   color: #00B7FF;
+  text-decoration: none;
 }
 
 .header {
@@ -49,6 +50,8 @@ a {
 .subhead {
   font-size: 1em;
   margin-top: 0;
+  font-color: #fff;
+  text-decoration: none;
 }
 
 .spacegiver {
